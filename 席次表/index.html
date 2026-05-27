@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- ★Netlify Dropのフォルダバグを回避するための強制ルートパス設定 -->
-    <base href="/">
     <title>Parents Dinner 2026 Seating Chart</title>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
@@ -43,7 +41,7 @@
         .event-info { color: #888; font-size: 10px; letter-spacing: 0.5px; margin-top: 5px; }
         .line { width: 30px; height: 1px; background: var(--keio-red); margin: 10px auto; }
 
-        /* --- 【PC・タブレット用】標準配置 --- */
+        /* --- 【PC・タブレット用】標準3列レイアウト --- */
         .seating-container {
             max-width: 1120px;
             margin: 0 auto;
@@ -75,15 +73,18 @@
         .table-label { font-size: 7px; color: var(--gold-accent); margin-top: -2px; letter-spacing: 1px; pointer-events: none; }
 
         .guest-list { 
-            position: absolute; width: 120px; 
-            display: flex; flex-direction: column; justify-content: center; 
-            font-size: 11px; line-height: 1.6; font-weight: bold; 
+            position: absolute; 
+            width: 120px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            font-size: 11px; 
+            line-height: 1.6; 
+            font-weight: bold; 
             z-index: 10;
             pointer-events: none;
-            text-shadow: 0 0 4px #fff, 0 0 4px #fff;
             white-space: nowrap;
         }
-        /* PC環境では綺麗にテーブルの左右外側に配置 */
         .list-left { right: calc(50% + 58px); text-align: right; }
         .list-right { left: calc(50% + 58px); text-align: left; }
 
@@ -98,41 +99,11 @@
             text-align: center;
         }
         .program-title { font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: var(--gold-accent); margin-bottom: 20px; }
-        
-        .program-table { 
-            margin: 0 auto; 
-            width: 100%; 
-            border-collapse: collapse; 
-            font-size: 14px;
-        }
-        
-        .p-time { 
-            padding: 12px 15px 12px 0; 
-            font-weight: bold; 
-            color: var(--keio-blue); 
-            white-space: nowrap;
-            width: 150px; 
-            text-align: right; 
-            vertical-align: top;
-        }
-        
-        .p-activity { 
-            padding: 12px 0 12px 15px; 
-            text-align: left; 
-            line-height: 1.6;
-            vertical-align: top;
-        }
-        
-        .p-activity div {
-            white-space: nowrap;
-        }
-        
-        .p-location {
-            font-style: italic;
-            color: #777;
-            font-weight: normal;
-            margin-left: 6px;
-        }
+        .program-table { margin: 0 auto; width: 100%; border-collapse: collapse; font-size: 14px; }
+        .p-time { padding: 12px 15px 12px 0; font-weight: bold; color: var(--keio-blue); white-space: nowrap; width: 150px; text-align: right; vertical-align: top; }
+        .p-activity { padding: 12px 0 12px 15px; text-align: left; line-height: 1.6; vertical-align: top; }
+        .p-activity div { white-space: nowrap; }
+        .p-location { font-style: italic; color: #777; font-weight: normal; margin-left: 6px; }
 
         /* 編集モーダル */
         #modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
@@ -142,47 +113,71 @@
         .btn { background: var(--keio-blue); color: white; border: none; padding: 10px 25px; border-radius: 20px; cursor: pointer; font-weight: bold; }
 
         /* ========================================================
-           ★ スマートフォン専用：名前衝突解消・改行ガード・強制3列表示
+           ★ スマートフォン縦向き専用：名前を1箇所にまとめてまとめる
            ======================================================== */
-        @media (max-width: 768px) {
+        @media (max-width: 768px) and (orientation: portrait) {
             .seating-container {
                 grid-template-columns: repeat(3, 1fr);
-                gap: 25px 2px;
-                padding: 10px 2px;
+                gap: 20px 5px; /* テーブルごとの隙間を最適化 */
+                padding: 10px 5px;
                 width: 100%;
                 box-sizing: border-box;
             }
 
             .table-group {
-                height: 145px;
+                height: 155px; /* 上に見出しが付く分、高さを少し確保 */
+                flex-direction: column; /* 上から「見出し」「円（名前入り）」の順に並べる */
+                justify-content: flex-start;
+                align-items: center;
             }
 
-            /* テーブルを少しコンパクトにして、名前の表示スペースを左右に広く確保 */
+            /* テーブルの円（クリック可能） */
             .table-card {
                 width: 60px;
                 height: 60px;
+                margin-top: 5px; /* 見出しとの隙間 */
+                position: relative;
+                z-index: 5;
             }
-            .table-num { font-size: 18px; }
+            .table-num { font-size: 16px; }
             .table-label { font-size: 5px; margin-top: -3px; }
 
-            /* 名前の表示位置：テーブルの中央から左右にパッと逃がして重なりを解消 */
+            /* ★ ここが重要：名前を1列にまとめて円の中に収める */
             .guest-list {
-                font-size: 9px;
-                width: 65px; 
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 52px; /* 円の中に収まる幅 */
+                height: 52px; /* 円の中に収まる高さ */
+                overflow-y: auto; /* 名前が多い場合にスクロール */
+                display: block; /* 1列にまとめる */
+                font-size: 8px; /* 窮屈にならない文字サイズ */
+                line-height: 1.4;
+                text-align: center;
+                z-index: 10;
+                pointer-events: none;
+                white-space: normal; /* 折り返しを許可 */
             }
-            /* 50%（中央ライン）から、テーブルの半径＋余白分だけ外側にずらす */
-            .list-left { right: calc(50% + 34px); text-align: right; }
-            .list-right { left: calc(50% + 34px); text-align: left; }
+            
+            /* 左右のリストを1つに統合 */
+            .list-left, .list-right {
+                position: static;
+                width: 100%;
+                height: auto;
+                right: auto;
+                left: auto;
+                transform: none;
+                margin: 0;
+                padding: 0;
+            }
         }
 
-        /* 画面幅がかなり狭いスマホ（iPhone SEなど）用の微調整 */
-        @media (max-width: 395px) {
-            .guest-list { font-size: 8px; width: 60px; }
-            .list-left { right: calc(50% + 31px); }
-            .list-right { left: calc(50% + 31px); }
+        /* 非常に幅の狭いスマホでの微調整 */
+        @media (max-width: 375px) and (orientation: portrait) {
+            .guest-list { font-size: 7.5px; width: 48px; height: 48px; }
             .p-time { width: 110px !important; font-size: 11px !important; }
             .p-activity { font-size: 11px !important; }
-            .p-activity div { font-size: 9.5px !important; }
         }
     </style>
 </head>
@@ -196,7 +191,6 @@
         <div class="line"></div>
     </header>
 
-    <!-- ★Netlifyのバグを回避する強制3列座席コンテナ -->
     <div class="seating-container">
         <div id="t1" class="table-group"></div>
         <div id="t2" class="table-group"></div>
@@ -209,7 +203,6 @@
         <div id="t9" class="table-group"></div>
     </div>
 
-    <!-- 改行ガードを施したプログラムエリア -->
     <div class="program-section">
         <div class="program-title">Program</div>
         <table class="program-table">
@@ -245,7 +238,6 @@
         </table>
     </div>
 
-    <!-- 編集用モーダル -->
     <div id="modal">
         <div class="modal-box">
             <h2 id="m-title" style="color:var(--keio-blue); font-size: 18px;">Table 00</h2>
@@ -332,13 +324,15 @@
                 const ns = tableData[i] || [];
                 const mid = Math.ceil(ns.length / 2);
                 
+                // ★Netlify Dropの画面のように、名前を1列にまとめてまとめる構造に修正
                 con.innerHTML = `
-                    <div class="guest-list list-left">${ns.slice(0,mid).map(n=>`<div>${n}</div>`).join('')}</div>
                     <div class="table-card" onclick="window.openModal('${i}')">
                         <div class="table-num">${i}</div>
                         <div class="table-label">TABLE</div>
                     </div>
-                    <div class="guest-list list-right">${ns.slice(mid).map(n=>`<div>${n}</div>`).join('')}</div>
+                    <div class="guest-list">
+                        ${ns.map(n=>`<div>${n}</div>`).join('')}
+                    </div>
                 `;
             }
         }
