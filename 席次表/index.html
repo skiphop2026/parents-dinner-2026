@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- ★Netlify Dropのフォルダバグを回避するための強制ルートパス設定 -->
+    <base href="/">
     <title>Parents Dinner 2026 Seating Chart</title>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
@@ -41,7 +43,7 @@
         .event-info { color: #888; font-size: 10px; letter-spacing: 0.5px; margin-top: 5px; }
         .line { width: 30px; height: 1px; background: var(--keio-red); margin: 10px auto; }
 
-        /* --- 【PC・タブレット・スマホ横向き用】標準3列レイアウト --- */
+        /* --- 【PC・タブレット用】標準配置 --- */
         .seating-container {
             max-width: 1120px;
             margin: 0 auto;
@@ -59,11 +61,6 @@
             align-items: center;
         }
 
-        /* スマホ縦用に追加したヘッダーはPC環境では非表示 */
-        .mobile-table-header {
-            display: none;
-        }
-
         .table-card {
             width: 100px; height: 100px;
             background: var(--table-beige); 
@@ -78,18 +75,15 @@
         .table-label { font-size: 7px; color: var(--gold-accent); margin-top: -2px; letter-spacing: 1px; pointer-events: none; }
 
         .guest-list { 
-            position: absolute; 
-            width: 120px; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            font-size: 11px; 
-            line-height: 1.6; 
-            font-weight: bold; 
+            position: absolute; width: 120px; 
+            display: flex; flex-direction: column; justify-content: center; 
+            font-size: 11px; line-height: 1.6; font-weight: bold; 
             z-index: 10;
             pointer-events: none;
+            text-shadow: 0 0 4px #fff, 0 0 4px #fff;
             white-space: nowrap;
         }
+        /* PC環境では綺麗にテーブルの左右外側に配置 */
         .list-left { right: calc(50% + 58px); text-align: right; }
         .list-right { left: calc(50% + 58px); text-align: left; }
 
@@ -104,11 +98,41 @@
             text-align: center;
         }
         .program-title { font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: var(--gold-accent); margin-bottom: 20px; }
-        .program-table { margin: 0 auto; width: 100%; border-collapse: collapse; font-size: 14px; }
-        .p-time { padding: 12px 15px 12px 0; font-weight: bold; color: var(--keio-blue); white-space: nowrap; width: 150px; text-align: right; vertical-align: top; }
-        .p-activity { padding: 12px 0 12px 15px; text-align: left; line-height: 1.6; vertical-align: top; }
-        .p-activity div { white-space: nowrap; }
-        .p-location { font-style: italic; color: #777; font-weight: normal; margin-left: 6px; }
+        
+        .program-table { 
+            margin: 0 auto; 
+            width: 100%; 
+            border-collapse: collapse; 
+            font-size: 14px;
+        }
+        
+        .p-time { 
+            padding: 12px 15px 12px 0; 
+            font-weight: bold; 
+            color: var(--keio-blue); 
+            white-space: nowrap;
+            width: 150px; 
+            text-align: right; 
+            vertical-align: top;
+        }
+        
+        .p-activity { 
+            padding: 12px 0 12px 15px; 
+            text-align: left; 
+            line-height: 1.6;
+            vertical-align: top;
+        }
+        
+        .p-activity div {
+            white-space: nowrap;
+        }
+        
+        .p-location {
+            font-style: italic;
+            color: #777;
+            font-weight: normal;
+            margin-left: 6px;
+        }
 
         /* 編集モーダル */
         #modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
@@ -118,78 +142,47 @@
         .btn { background: var(--keio-blue); color: white; border: none; padding: 10px 25px; border-radius: 20px; cursor: pointer; font-weight: bold; }
 
         /* ========================================================
-           ★ スマートフォン縦向き専用：手書きイメージの完全再現レイアウト
+           ★ スマートフォン専用：名前衝突解消・改行ガード・強制3列表示
            ======================================================== */
-        @media (max-width: 768px) and (orientation: portrait) {
+        @media (max-width: 768px) {
             .seating-container {
                 grid-template-columns: repeat(3, 1fr);
-                gap: 25px 3px; /* テーブルごとの隙間を最適化 */
-                padding: 10px 4px;
+                gap: 25px 2px;
+                padding: 10px 2px;
                 width: 100%;
                 box-sizing: border-box;
             }
 
             .table-group {
-                height: 165px; /* 上に見出しが付く分、高さを少し確保 */
-                flex-direction: column; /* 上から「見出し」「円（名前入り）」の順に並べる */
-                justify-content: flex-start;
+                height: 145px;
             }
 
-            /* 手書きイメージ通り、上に表示する「Table X」の見出し */
-            .mobile-table-header {
-                display: block;
-                font-family: 'Great Vibes', cursive;
-                font-size: 14px;
-                color: var(--gold-accent);
-                margin-bottom: 4px;
-                font-weight: bold;
-                text-align: center;
-            }
-
-            /* 円を文字全体を包む「大きな背景座席」に変形（クリック可能） */
+            /* テーブルを少しコンパクトにして、名前の表示スペースを左右に広く確保 */
             .table-card {
-                width: 100%; /* マスいっぱいに広げる */
-                height: 125px;
-                background: rgba(245, 241, 228, 0.55); /* 手書きの薄いオレンジ/ベージュ円を再現 */
-                border: 1px solid rgba(180, 151, 90, 0.3);
-                border-radius: 24px; /* 縦長の綺麗な角丸（ほぼ楕円）にして文字を包む */
-                box-shadow: 0 3px 10px rgba(0,0,0,0.02);
-                position: relative;
-                z-index: 5;
+                width: 60px;
+                height: 60px;
             }
+            .table-num { font-size: 18px; }
+            .table-label { font-size: 5px; margin-top: -3px; }
 
-            /* 元々中央にあった数字とLABELは不要になるので非表示に */
-            .table-num, .table-label { display: none; }
-
-            /* ゲスト名を円の中に完全に収める配置 */
+            /* 名前の表示位置：テーブルの中央から左右にパッと逃がして重なりを解消 */
             .guest-list {
-                position: absolute;
-                top: 50%;
-                transform: translateY(-50%);
-                width: 46%; /* 左右に2分割して綺麗に収める */
-                font-size: 8.5px; /* 文字が絶対に潰れないサイズ */
-                line-height: 1.5;
-                z-index: 10;
-                text-shadow: none; /* 背景が敷いてあるのでシャドウ不要 */
+                font-size: 9px;
+                width: 65px; 
             }
-            
-            /* 大きな円の内部の左右にぴったり配置 */
-            .list-left { 
-                right: 51%; 
-                text-align: right; 
-            }
-            .list-right { 
-                left: 51%; 
-                text-align: left; 
-            }
+            /* 50%（中央ライン）から、テーブルの半径＋余白分だけ外側にずらす */
+            .list-left { right: calc(50% + 34px); text-align: right; }
+            .list-right { left: calc(50% + 34px); text-align: left; }
         }
 
-        /* 非常に幅の狭いスマホ（iPhone SEなど）での微調整 */
-        @media (max-width: 375px) and (orientation: portrait) {
-            .guest-list { font-size: 7.5px; }
-            .mobile-table-header { font-size: 13px; }
-            .p-time { width: 10px !important; font-size: 11px !important; }
+        /* 画面幅がかなり狭いスマホ（iPhone SEなど）用の微調整 */
+        @media (max-width: 395px) {
+            .guest-list { font-size: 8px; width: 60px; }
+            .list-left { right: calc(50% + 31px); }
+            .list-right { left: calc(50% + 31px); }
+            .p-time { width: 110px !important; font-size: 11px !important; }
             .p-activity { font-size: 11px !important; }
+            .p-activity div { font-size: 9.5px !important; }
         }
     </style>
 </head>
@@ -203,6 +196,7 @@
         <div class="line"></div>
     </header>
 
+    <!-- ★Netlifyのバグを回避する強制3列座席コンテナ -->
     <div class="seating-container">
         <div id="t1" class="table-group"></div>
         <div id="t2" class="table-group"></div>
@@ -215,6 +209,7 @@
         <div id="t9" class="table-group"></div>
     </div>
 
+    <!-- 改行ガードを施したプログラムエリア -->
     <div class="program-section">
         <div class="program-title">Program</div>
         <table class="program-table">
@@ -250,6 +245,7 @@
         </table>
     </div>
 
+    <!-- 編集用モーダル -->
     <div id="modal">
         <div class="modal-box">
             <h2 id="m-title" style="color:var(--keio-blue); font-size: 18px;">Table 00</h2>
@@ -336,15 +332,13 @@
                 const ns = tableData[i] || [];
                 const mid = Math.ceil(ns.length / 2);
                 
-                // スマホ縦向き用のヘッダー「Table X」と、名前を内包するカード構造
                 con.innerHTML = `
-                    <div class="mobile-table-header">Table ${i}</div>
+                    <div class="guest-list list-left">${ns.slice(0,mid).map(n=>`<div>${n}</div>`).join('')}</div>
                     <div class="table-card" onclick="window.openModal('${i}')">
-                        <div class="guest-list list-left">${ns.slice(0,mid).map(n=>`<div>${n}</div>`).join('')}</div>
                         <div class="table-num">${i}</div>
                         <div class="table-label">TABLE</div>
-                        <div class="guest-list list-right">${ns.slice(mid).map(n=>`<div>${n}</div>`).join('')}</div>
                     </div>
+                    <div class="guest-list list-right">${ns.slice(mid).map(n=>`<div>${n}</div>`).join('')}</div>
                 `;
             }
         }
