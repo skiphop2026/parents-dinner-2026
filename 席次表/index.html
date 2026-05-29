@@ -46,9 +46,11 @@
         .gold-bold { color: var(--gold-accent); font-weight: bold; }
         
         .bus-container { margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px; text-align: center; }
-        .bus-title { font-weight: bold; color: var(--keio-blue); margin-bottom: 10px; font-size: 13px; }
-        .bus-route-list { display: flex; flex-direction: column; gap: 15px; font-size: 11px; color: #555; }
-        .bus-group { line-height: 1.5; }
+        .bus-title { font-weight: bold; color: var(--gold-accent); margin-bottom: 10px; font-size: 13px; }
+        /* リストの左端を揃えるための設定 */
+        .bus-route-list { display: inline-block; text-align: left; font-size: 11px; color: #555; }
+        .bus-group { line-height: 1.6; margin-bottom: 15px; }
+        .bus-note { font-size: 10px; color: #555; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -88,6 +90,7 @@
                     1. Luxury Apartment<br>2. Sonesta White Plains Downtown<br>3. Opus Westchester<br>4. Westchester Marriott Tarrytown
                 </div>
             </div>
+            <div class="bus-note">バス入口にホテル名が記載してあります。<br>お乗り間違いのないようお気をつけ下さい。</div>
         </div>
     </div>
 
