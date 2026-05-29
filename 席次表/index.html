@@ -3,355 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Parents Dinner 2026 Seating Chart</title>
+    <title>Parents Dinner 2026</title>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
-        :root { 
-            --keio-blue: #003366; 
-            --keio-red: #C8102E; 
-            --gold-accent: #b4975a;
-            --table-beige: #f5f1e4;
-        }
+        :root { --blue: #003366; --red: #C8102E; --gold: #b4975a; --beige: #f5f1e4; }
+        body { font-family: "Hiragino Mincho ProN", serif; background: #fcfcfc; margin: 0; padding: 20px; color: #333; }
         
-        body { 
-            background-color: #fcfcfc; 
-            font-family: "Hiragino Mincho ProN", serif; 
-            margin: 0; padding: 0; color: #333; 
-            overflow-x: hidden;
-            width: 100%;
-        }
+        /* ヘッダー */
+        header { text-align: center; margin-bottom: 30px; }
+        h1 { font-family: 'Great Vibes', cursive; font-size: 3rem; color: var(--blue); margin: 0; }
+        .school-name { font-size: 10px; letter-spacing: 0.2em; color: var(--gold); font-weight: bold; }
+        .line { width: 40px; height: 1px; background: var(--red); margin: 10px auto; }
+
+        /* コンテナ */
+        .seating-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 900px; margin: 0 auto; }
         
-        header { 
-            text-align: center;
-            margin-bottom: 20px; 
-            padding-top: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .grad-cap { font-size: 2.5rem; margin-bottom: 5px; }
-        .school-name { font-size: 10px; letter-spacing: 0.2em; color: var(--gold-accent); margin-bottom: 2px; font-weight: bold; }
-        h1 { 
-            font-family: 'Great Vibes', cursive; 
-            font-size: clamp(1.8rem, 8vw, 4.2rem); 
-            margin: 0; font-weight: 400; color: var(--keio-blue); 
-            white-space: nowrap;
-        }
-        .event-info { color: #888; font-size: 10px; letter-spacing: 0.5px; margin-top: 5px; }
-        .line { width: 30px; height: 1px; background: var(--keio-red); margin: 10px auto; }
+        /* テーブル表示（円形） */
+        .table-group { text-align: center; }
+        .table-circle { width: 100px; height: 100px; background: var(--beige); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto 10px; }
+        .table-num { font-size: 24px; font-weight: bold; color: var(--blue); }
+        .guest-list { font-size: 10px; line-height: 1.8; }
 
-        /* --- 【PC・タブレット・スマホ横向き用】標準3列レイアウト --- */
-        .seating-container {
-            max-width: 1120px;
-            margin: 0 auto;
-            padding: 20px 10px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px 20px;
-        }
+        /* プログラム */
+        .program-section { max-width: 600px; margin: 50px auto; border-top: 1px solid #eee; padding-top: 30px; }
+        .program-title { font-family: 'Great Vibes', cursive; font-size: 2.5rem; color: var(--gold); text-align: center; margin-bottom: 20px; }
+        .p-row { display: flex; margin-bottom: 15px; font-size: 13px; }
+        .p-time { width: 140px; font-weight: bold; color: var(--blue); flex-shrink: 0; }
+        .red-text { color: var(--red); font-weight: bold; }
 
-        .table-group {
-            position: relative;
-            height: 180px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* スマホ縦用に追加したヘッダーはPC環境では非表示 */
-        .mobile-table-header {
-            display: none;
-        }
-
-        .table-card {
-            width: 100px; height: 100px;
-            background: var(--table-beige); 
-            border-radius: 50%;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 5;
-            cursor: pointer;
-            box-shadow: inset 0 0 10px rgba(180, 151, 90, 0.1);
-            flex-shrink: 0;
-        }
-        .table-num { font-size: 26px; color: var(--keio-blue); font-weight: bold; pointer-events: none; }
-        .table-label { font-size: 7px; color: var(--gold-accent); margin-top: -2px; letter-spacing: 1px; pointer-events: none; }
-
-        .guest-list { 
-            position: absolute; 
-            width: 120px; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            font-size: 11px; 
-            line-height: 1.6; 
-            font-weight: bold; 
-            z-index: 10;
-            pointer-events: none;
-            white-space: nowrap;
-        }
-        .list-left { right: calc(50% + 58px); text-align: right; }
-        .list-right { left: calc(50% + 58px); text-align: left; }
-
-        /* --- プログラムセクション --- */
-        .program-section {
-            margin: 40px auto 60px auto;
-            width: 95%;
-            max-width: 700px; 
-            border-top: 1px solid #eee;
-            padding: 30px 0;
-            box-sizing: border-box;
-            text-align: center;
-        }
-        .program-title { font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: var(--gold-accent); margin-bottom: 20px; }
-        .program-table { margin: 0 auto; width: 100%; border-collapse: collapse; font-size: 14px; }
-        .p-time { padding: 12px 15px 12px 0; font-weight: bold; color: var(--keio-blue); white-space: nowrap; width: 150px; text-align: right; vertical-align: top; }
-        .p-activity { padding: 12px 0 12px 15px; text-align: left; line-height: 1.6; vertical-align: top; }
-        .p-activity div { white-space: nowrap; }
-        .p-location { font-style: italic; color: #777; font-weight: normal; margin-left: 6px; }
-
-        /* 編集モーダル */
-        #modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-        .modal-box { background: white; padding: 20px; border-radius: 15px; width: 85%; max-width: 400px; text-align: center; }
-        #m-display { display: flex; justify-content: space-around; margin: 15px 0; font-size: 14px; line-height: 1.8; }
-        textarea { width: 90%; height: 200px; margin: 10px 0; padding: 10px; font-size: 15px; }
-        .btn { background: var(--keio-blue); color: white; border: none; padding: 10px 25px; border-radius: 20px; cursor: pointer; font-weight: bold; }
-
-        /* ========================================================
-           ★ スマートフォン縦向き専用：手書きイメージの完全再現レイアウト
-           ======================================================== */
-        @media (max-width: 768px) and (orientation: portrait) {
-            .seating-container {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 25px 3px; /* テーブルごとの隙間を最適化 */
-                padding: 10px 4px;
-                width: 100%;
-                box-sizing: border-box;
-            }
-
-            .table-group {
-                height: 165px; /* 上に見出しが付く分、高さを少し確保 */
-                flex-direction: column; /* 上から「見出し」「円（名前入り）」の順に並べる */
-                justify-content: flex-start;
-            }
-
-            /* 手書きイメージ通り、上に表示する「Table X」の見出し */
-            .mobile-table-header {
-                display: block;
-                font-family: 'Great Vibes', cursive;
-                font-size: 14px;
-                color: var(--gold-accent);
-                margin-bottom: 4px;
-                font-weight: bold;
-                text-align: center;
-            }
-
-            /* 円を文字全体を包む「大きな背景座席」に変形（クリック可能） */
-            .table-card {
-                width: 100%; /* マスいっぱいに広げる */
-                height: 125px;
-                background: rgba(245, 241, 228, 0.55); /* 手書きの薄いオレンジ/ベージュ円を再現 */
-                border: 1px solid rgba(180, 151, 90, 0.3);
-                border-radius: 24px; /* 縦長の綺麗な角丸（ほぼ楕円）にして文字を包む */
-                box-shadow: 0 3px 10px rgba(0,0,0,0.02);
-                position: relative;
-                z-index: 5;
-            }
-
-            /* 元々中央にあった数字とLABELは不要になるので非表示に */
-            .table-num, .table-label { display: none; }
-
-            /* ゲスト名を円の中に完全に収める配置 */
-            .guest-list {
-                position: absolute;
-                top: 50%;
-                transform: translateY(-50%);
-                width: 46%; /* 左右に2分割して綺麗に収める */
-                font-size: 8.5px; /* 文字が絶対に潰れないサイズ */
-                line-height: 1.5;
-                z-index: 10;
-                text-shadow: none; /* 背景が敷いてあるのでシャドウ不要 */
-            }
-            
-            /* 大きな円の内部の左右にぴったり配置 */
-            .list-left { 
-                right: 51%; 
-                text-align: right; 
-            }
-            .list-right { 
-                left: 51%; 
-                text-align: left; 
-            }
-        }
-
-        /* 非常に幅の狭いスマホ（iPhone SEなど）での微調整 */
-        @media (max-width: 375px) and (orientation: portrait) {
-            .guest-list { font-size: 7.5px; }
-            .mobile-table-header { font-size: 13px; }
-            .p-time { width: 10px !important; font-size: 11px !important; }
-            .p-activity { font-size: 11px !important; }
+        /* 横向き（Landscape）の時だけカード型にする */
+        @media screen and (orientation: landscape) {
+            .seating-container { grid-template-columns: repeat(3, 1fr); }
+            .table-circle { border-radius: 10px; width: 100%; height: auto; padding: 20px; border: 1px solid #ddd; }
         }
     </style>
 </head>
 <body>
-
     <header>
-        <div class="grad-cap">🎓</div>
         <div class="school-name">KEIO ACADEMY OF NEW YORK</div>
         <h1>Parents Dinner 2026</h1>
-        <div class="event-info">June 6, 2026 at Harrison Meadows Country Club</div>
         <div class="line"></div>
     </header>
 
-    <div class="seating-container">
-        <div id="t1" class="table-group"></div>
-        <div id="t2" class="table-group"></div>
-        <div id="t3" class="table-group"></div>
-        <div id="t4" class="table-group"></div>
-        <div id="t5" class="table-group"></div>
-        <div id="t6" class="table-group"></div>
-        <div id="t7" class="table-group"></div>
-        <div id="t8" class="table-group"></div>
-        <div id="t9" class="table-group"></div>
-    </div>
+    <div class="seating-container" id="seating">
+        </div>
 
     <div class="program-section">
         <div class="program-title">Program</div>
-        <table class="program-table">
-            <tr style="border-bottom: 1px solid #f5f5f5;">
-                <td class="p-time">6:00 PM - 7:00 PM</td>
-                <td class="p-activity">
-                    <strong>Cocktail Hour</strong><span class="p-location">/ Terrace</span>
-                    <div style="color:#c8102e; margin-top:4px; font-weight: bold;">
-                        6:50 PM Group Photo
-                    </div>
-                </td>
-            </tr>
-            <tr style="border-bottom: 1px solid #f5f5f5;">
-                <td class="p-time">7:00 PM - 8:00 PM</td>
-                <td class="p-activity">
-                    <strong>Seated Dinner</strong><span class="p-location">/ Grand Ballroom</span>
-                    <div style="color:#555; margin-top:5px; line-height:1.6;">
-                        Opening Remarks: NYPA会長 堀 雄一朗様<br>
-                        Toast Speech: 日本PA副代表 兼 学年代表 植木 信行様
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td class="p-time">8:00 PM - 10:00 PM</td>
-                <td class="p-activity">
-                    <strong>Dessert</strong><span class="p-location">/ Terrace</span>
-                    <div style="color:#555; margin-top:5px; line-height:1.6;">
-                        <span style="color:#ba975b; font-weight: bold;">8:30 PM Video Presentation</span><br>
-                        9:30 PM Closing Remarks: 日本PA 副代表 中谷 英章様
-                    </div>
-                </td>
-            </tr>
-        </table>
+        <div class="p-row"><div class="p-time">6:00 PM - 7:00 PM</div><div>Cocktail Hour / Terrace</div></div>
+        <div class="p-row"><div class="p-time">6:50 PM</div><div class="red-text">Group Photo</div></div>
+        <div class="p-row"><div class="p-time">7:00 PM - 8:00 PM</div><div>Seated Dinner / Grand Ballroom<br>Opening Remarks: NYPA会長 堀 雄一朗様<br>Toast Speech: 日本PA 副代表 兼 学年代表 植木 信行様</div></div>
+        <div class="p-row"><div class="p-time">8:00 PM - 10:00 PM</div><div>Dessert / Terrace<br>8:30 PM Video Presentation<br>9:30 PM Closing Remarks: 日本PA副代表 中谷 英章様</div></div>
+        <div class="p-row"><div class="p-time">9:40 PM</div><div class="red-text">帰りのバス利用者はバスへ移動</div></div>
+        <div class="p-row"><div class="p-time">9:50 PM</div><div class="red-text">バス出発</div></div>
     </div>
-
-    <div id="modal">
-        <div class="modal-box">
-            <h2 id="m-title" style="color:var(--keio-blue); font-size: 18px;">Table 00</h2>
-            <div id="m-display">
-                <div id="m-left" style="text-align:right; flex:1;"></div>
-                <div id="m-right" style="text-align:left; flex:1; padding-left:10px;"></div>
-            </div>
-            <textarea id="m-editor" style="display:none;"></textarea>
-            <div style="margin-top:15px;">
-                <button id="m-btn" class="btn" onclick="toggleEdit()">リスト編集</button>
-                <button onclick="closeModal()" style="background:none; border:none; color:#888; margin-left:10px; cursor:pointer;">閉じる</button>
-            </div>
-        </div>
-    </div>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDF-hu49Q2U8iqwct-yUTxfqWWo81lA8LU",
-            authDomain: "seating-chart-1e3e0.firebaseapp.com",
-            projectId: "seating-chart-1e3e0",
-            storageBucket: "seating-chart-1e3e0.firebasestorage.app",
-            messagingSenderId: "946854768169",
-            appId: "1:946854768169:web:a9e6cb0938ed0c586bf638"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
-
-        let tableData = {};
-        let activeId = null;
-        let isEditMode = false;
-
-        window.openModal = function(id) {
-            activeId = id; 
-            isEditMode = false;
-            document.getElementById('m-title').innerText = "Table " + id;
-            const list = tableData[id] || [];
-            const mid = Math.ceil(list.length / 2);
-            document.getElementById('m-left').innerHTML = list.slice(0,mid).join('<br>') || '(空席)';
-            document.getElementById('m-right').innerHTML = list.slice(mid).join('<br>');
-            document.getElementById('m-editor').style.display = 'none';
-            document.getElementById('m-display').style.display = 'flex';
-            document.getElementById('m-btn').innerText = 'リスト編集';
-            document.getElementById('modal').style.display = 'flex';
-        };
-
-        window.closeModal = () => document.getElementById('modal').style.display = 'none';
-
-        window.toggleEdit = async function() {
-            const ed = document.getElementById('m-editor');
-            const disp = document.getElementById('m-display');
-            if(!isEditMode) {
-                ed.value = (tableData[activeId] || []).join('\n');
-                ed.style.display = 'block'; disp.style.display = 'none';
-                document.getElementById('m-btn').innerText = '保存する'; isEditMode = true;
-            } else {
-                const newNames = ed.value.split('\n').map(s=>s.trim()).filter(s=>s);
-                tableData[activeId] = newNames;
-                try {
-                    await setDoc(doc(db, 'seating', 'parents_dinner_2026'), { guests: tableData });
-                    isEditMode = false; closeModal();
-                } catch (e) { alert("保存失敗"); }
-            }
-        };
-
-        function startSync() {
-            onSnapshot(doc(db, 'seating', 'parents_dinner_2026'), (snap) => {
-                if (snap.exists()) {
-                    tableData = snap.data().guests || {};
-                    render();
-                }
-            });
-        }
-
-        function render() {
-            for(let i=1; i<=9; i++) {
-                const con = document.getElementById(`t${i}`);
-                if (!con) continue;
-                const ns = tableData[i] || [];
-                const mid = Math.ceil(ns.length / 2);
-                
-                // スマホ縦向き用のヘッダー「Table X」と、名前を内包するカード構造
-                con.innerHTML = `
-                    <div class="mobile-table-header">Table ${i}</div>
-                    <div class="table-card" onclick="window.openModal('${i}')">
-                        <div class="guest-list list-left">${ns.slice(0,mid).map(n=>`<div>${n}</div>`).join('')}</div>
-                        <div class="table-num">${i}</div>
-                        <div class="table-label">TABLE</div>
-                        <div class="guest-list list-right">${ns.slice(mid).map(n=>`<div>${n}</div>`).join('')}</div>
-                    </div>
-                `;
-            }
-        }
-
-        signInAnonymously(auth).then(() => {
-            onAuthStateChanged(auth, (user) => { if(user) startSync(); });
-        });
-    </script>
 </body>
 </html>
