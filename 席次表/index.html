@@ -20,29 +20,28 @@
         .table-group { display: flex; flex-direction: column; align-items: center; }
         .table-title { font-family: 'Great Vibes', cursive; font-size: 14px; color: var(--gold-accent); margin-bottom: 5px; }
         
-        /* 共通：カード */
-        .table-card { cursor: pointer; display: flex; align-items: center; justify-content: center; position: relative; }
+        /* 共通カード */
+        .table-card { cursor: pointer; display: flex; align-items: center; justify-content: center; position: relative; transition: all 0.3s; }
         .guest-wrapper { display: flex; justify-content: center; width: 100%; pointer-events: none; }
         .guest-list { font-size: 8px; line-height: 1.5; font-weight: bold; white-space: nowrap; }
 
-        /* 縦向き：カード */
         @media screen and (orientation: portrait) {
             .table-card { width: 100%; background: rgba(245, 241, 228, 0.6); border: 1px solid rgba(180, 151, 90, 0.3); border-radius: 12px; padding: 10px 2px; }
             .list-left { text-align: right; padding-right: 3px; }
             .list-right { text-align: left; padding-left: 3px; }
         }
 
-        /* 横向き：円＆オーバーラップ */
         @media screen and (orientation: landscape) {
             .table-card { width: 70px; height: 70px; background: var(--table-beige); border-radius: 50%; box-shadow: inset 0 0 10px rgba(180, 151, 90, 0.2); }
             .guest-wrapper { position: absolute; width: 200px; }
-            .list-left { text-align: right; padding-right: 35px; } /* 少し円に重なるように調整 */
+            .list-left { text-align: right; padding-right: 35px; }
             .list-right { text-align: left; padding-left: 35px; }
         }
 
         /* プログラム */
-        .program-section { margin: 40px auto; width: 95%; max-width: 600px; border-top: 1px solid #eee; padding-top: 30px; }
-        .program-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+        .program-section { margin: 40px auto; width: 95%; max-width: 600px; border-top: 1px solid #eee; padding-top: 30px; text-align: center; }
+        .program-title { font-family: 'Great Vibes', cursive; font-size: 2.0rem; color: var(--gold-accent); margin-bottom: 15px; }
+        .program-table { width: 100%; border-collapse: collapse; font-size: 11px; margin: 0 auto; }
         .p-time { padding: 8px 5px; font-weight: bold; color: var(--keio-blue); width: 100px; text-align: right; vertical-align: top; white-space: nowrap; }
         .p-activity { padding: 8px 5px; text-align: left; vertical-align: top; line-height: 1.4; white-space: nowrap; }
         .red-bold { color: var(--keio-red); font-weight: bold; }
@@ -66,6 +65,7 @@
     <div class="seating-container" id="seating"></div>
 
     <div class="program-section">
+        <div class="program-title">Program</div>
         <table class="program-table">
             <tr><td class="p-time">6:00 PM - 7:00 PM</td><td class="p-activity">Cocktail Hour / Terrace</td></tr>
             <tr><td class="p-time">6:50 PM</td><td class="p-activity red-bold">Group Photo</td></tr>
