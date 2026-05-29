@@ -9,32 +9,28 @@
         :root { --blue: #003366; --red: #C8102E; --gold: #b4975a; --beige: #f5f1e4; }
         body { font-family: "Hiragino Mincho ProN", serif; background: #fcfcfc; margin: 0; padding: 20px; color: #333; }
         
-        /* ヘッダー */
         header { text-align: center; margin-bottom: 30px; }
         h1 { font-family: 'Great Vibes', cursive; font-size: 3rem; color: var(--blue); margin: 0; }
         .school-name { font-size: 10px; letter-spacing: 0.2em; color: var(--gold); font-weight: bold; }
         .line { width: 40px; height: 1px; background: var(--red); margin: 10px auto; }
 
-        /* コンテナ */
-        .seating-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 900px; margin: 0 auto; }
-        
-        /* テーブル表示（円形） */
+        /* 座席表のレイアウト（スマホ縦は3列の円形） */
+        .seating-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; max-width: 900px; margin: 0 auto; }
         .table-group { text-align: center; }
-        .table-circle { width: 100px; height: 100px; background: var(--beige); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto 10px; }
-        .table-num { font-size: 24px; font-weight: bold; color: var(--blue); }
-        .guest-list { font-size: 10px; line-height: 1.8; }
+        .table-circle { width: 80px; height: 80px; background: var(--beige); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto 5px; font-weight: bold; color: var(--blue); }
+        .guest-list { font-size: 8px; line-height: 1.5; white-space: nowrap; }
 
         /* プログラム */
         .program-section { max-width: 600px; margin: 50px auto; border-top: 1px solid #eee; padding-top: 30px; }
         .program-title { font-family: 'Great Vibes', cursive; font-size: 2.5rem; color: var(--gold); text-align: center; margin-bottom: 20px; }
-        .p-row { display: flex; margin-bottom: 15px; font-size: 13px; }
-        .p-time { width: 140px; font-weight: bold; color: var(--blue); flex-shrink: 0; }
+        .p-row { display: flex; margin-bottom: 10px; font-size: 12px; }
+        .p-time { width: 130px; font-weight: bold; color: var(--blue); flex-shrink: 0; }
         .red-text { color: var(--red); font-weight: bold; }
 
         /* 横向き（Landscape）の時だけカード型にする */
         @media screen and (orientation: landscape) {
-            .seating-container { grid-template-columns: repeat(3, 1fr); }
-            .table-circle { border-radius: 10px; width: 100%; height: auto; padding: 20px; border: 1px solid #ddd; }
+            .table-circle { border-radius: 10px; width: 100%; height: auto; padding: 15px; border: 1px solid #ddd; }
+            .guest-list { font-size: 10px; }
         }
     </style>
 </head>
@@ -46,14 +42,28 @@
     </header>
 
     <div class="seating-container" id="seating">
-        </div>
+        <script>
+            // 9つのテーブルを自動作成
+            const seating = document.getElementById('seating');
+            for(let i=1; i<=9; i++) {
+                seating.innerHTML += `
+                    <div class="table-group">
+                        <div class="table-circle">
+                            <div style="font-size:20px;">${i}</div>
+                            <div style="font-size:7px;">TABLE</div>
+                        </div>
+                        <div class="guest-list">ゲスト名が入ります</div>
+                    </div>`;
+            }
+        </script>
+    </div>
 
     <div class="program-section">
         <div class="program-title">Program</div>
         <div class="p-row"><div class="p-time">6:00 PM - 7:00 PM</div><div>Cocktail Hour / Terrace</div></div>
         <div class="p-row"><div class="p-time">6:50 PM</div><div class="red-text">Group Photo</div></div>
-        <div class="p-row"><div class="p-time">7:00 PM - 8:00 PM</div><div>Seated Dinner / Grand Ballroom<br>Opening Remarks: NYPA会長 堀 雄一朗様<br>Toast Speech: 日本PA 副代表 兼 学年代表 植木 信行様</div></div>
-        <div class="p-row"><div class="p-time">8:00 PM - 10:00 PM</div><div>Dessert / Terrace<br>8:30 PM Video Presentation<br>9:30 PM Closing Remarks: 日本PA副代表 中谷 英章様</div></div>
+        <div class="p-row"><div class="p-time">7:00 PM - 8:00 PM</div><div>Seated Dinner / Grand Ballroom</div></div>
+        <div class="p-row"><div class="p-time">8:00 PM - 10:00 PM</div><div>Dessert / Terrace</div></div>
         <div class="p-row"><div class="p-time">9:40 PM</div><div class="red-text">帰りのバス利用者はバスへ移動</div></div>
         <div class="p-row"><div class="p-time">9:50 PM</div><div class="red-text">バス出発</div></div>
     </div>
