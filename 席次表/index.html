@@ -41,7 +41,7 @@
         .event-info { color: #888; font-size: 10px; letter-spacing: 0.5px; margin-top: 5px; }
         .line { width: 30px; height: 1px; background: var(--keio-red); margin: 10px auto; }
 
-        /* --- 【PC・タブレット用】標準3列レイアウト --- */
+        /* --- 【PC・タブレット・スマホ横向き用】標準3列レイアウト --- */
         .seating-container {
             max-width: 1120px;
             margin: 0 auto;
@@ -57,6 +57,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+
+        /* スマホ縦用に追加したヘッダーはPC環境では非表示 */
+        .mobile-table-header {
+            display: none;
         }
 
         .table-card {
@@ -113,70 +118,77 @@
         .btn { background: var(--keio-blue); color: white; border: none; padding: 10px 25px; border-radius: 20px; cursor: pointer; font-weight: bold; }
 
         /* ========================================================
-           ★ スマートフォン縦向き専用：名前を1箇所にまとめてまとめる
+           ★ スマートフォン縦向き専用：手書きイメージの完全再現レイアウト
            ======================================================== */
         @media (max-width: 768px) and (orientation: portrait) {
             .seating-container {
                 grid-template-columns: repeat(3, 1fr);
-                gap: 20px 5px; /* テーブルごとの隙間を最適化 */
-                padding: 10px 5px;
+                gap: 25px 3px; /* テーブルごとの隙間を最適化 */
+                padding: 10px 4px;
                 width: 100%;
                 box-sizing: border-box;
             }
 
             .table-group {
-                height: 155px; /* 上に見出しが付く分、高さを少し確保 */
+                height: 165px; /* 上に見出しが付く分、高さを少し確保 */
                 flex-direction: column; /* 上から「見出し」「円（名前入り）」の順に並べる */
                 justify-content: flex-start;
-                align-items: center;
             }
 
-            /* テーブルの円（クリック可能） */
+            /* 手書きイメージ通り、上に表示する「Table X」の見出し */
+            .mobile-table-header {
+                display: block;
+                font-family: 'Great Vibes', cursive;
+                font-size: 14px;
+                color: var(--gold-accent);
+                margin-bottom: 4px;
+                font-weight: bold;
+                text-align: center;
+            }
+
+            /* 円を文字全体を包む「大きな背景座席」に変形（クリック可能） */
             .table-card {
-                width: 60px;
-                height: 60px;
-                margin-top: 5px; /* 見出しとの隙間 */
+                width: 100%; /* マスいっぱいに広げる */
+                height: 125px;
+                background: rgba(245, 241, 228, 0.55); /* 手書きの薄いオレンジ/ベージュ円を再現 */
+                border: 1px solid rgba(180, 151, 90, 0.3);
+                border-radius: 24px; /* 縦長の綺麗な角丸（ほぼ楕円）にして文字を包む */
+                box-shadow: 0 3px 10px rgba(0,0,0,0.02);
                 position: relative;
                 z-index: 5;
             }
-            .table-num { font-size: 16px; }
-            .table-label { font-size: 5px; margin-top: -3px; }
 
-            /* ★ ここが重要：名前を1列にまとめて円の中に収める */
+            /* 元々中央にあった数字とLABELは不要になるので非表示に */
+            .table-num, .table-label { display: none; }
+
+            /* ゲスト名を円の中に完全に収める配置 */
             .guest-list {
                 position: absolute;
                 top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                width: 52px; /* 円の中に収まる幅 */
-                height: 52px; /* 円の中に収まる高さ */
-                overflow-y: auto; /* 名前が多い場合にスクロール */
-                display: block; /* 1列にまとめる */
-                font-size: 8px; /* 窮屈にならない文字サイズ */
-                line-height: 1.4;
-                text-align: center;
+                transform: translateY(-50%);
+                width: 46%; /* 左右に2分割して綺麗に収める */
+                font-size: 8.5px; /* 文字が絶対に潰れないサイズ */
+                line-height: 1.5;
                 z-index: 10;
-                pointer-events: none;
-                white-space: normal; /* 折り返しを許可 */
+                text-shadow: none; /* 背景が敷いてあるのでシャドウ不要 */
             }
             
-            /* 左右のリストを1つに統合 */
-            .list-left, .list-right {
-                position: static;
-                width: 100%;
-                height: auto;
-                right: auto;
-                left: auto;
-                transform: none;
-                margin: 0;
-                padding: 0;
+            /* 大きな円の内部の左右にぴったり配置 */
+            .list-left { 
+                right: 51%; 
+                text-align: right; 
+            }
+            .list-right { 
+                left: 51%; 
+                text-align: left; 
             }
         }
 
-        /* 非常に幅の狭いスマホでの微調整 */
+        /* 非常に幅の狭いスマホ（iPhone SEなど）での微調整 */
         @media (max-width: 375px) and (orientation: portrait) {
-            .guest-list { font-size: 7.5px; width: 48px; height: 48px; }
-            .p-time { width: 110px !important; font-size: 11px !important; }
+            .guest-list { font-size: 7.5px; }
+            .mobile-table-header { font-size: 13px; }
+            .p-time { width: 10px !important; font-size: 11px !important; }
             .p-activity { font-size: 11px !important; }
         }
     </style>
@@ -324,14 +336,14 @@
                 const ns = tableData[i] || [];
                 const mid = Math.ceil(ns.length / 2);
                 
-                // ★Netlify Dropの画面のように、名前を1列にまとめてまとめる構造に修正
+                // スマホ縦向き用のヘッダー「Table X」と、名前を内包するカード構造
                 con.innerHTML = `
+                    <div class="mobile-table-header">Table ${i}</div>
                     <div class="table-card" onclick="window.openModal('${i}')">
+                        <div class="guest-list list-left">${ns.slice(0,mid).map(n=>`<div>${n}</div>`).join('')}</div>
                         <div class="table-num">${i}</div>
                         <div class="table-label">TABLE</div>
-                    </div>
-                    <div class="guest-list">
-                        ${ns.map(n=>`<div>${n}</div>`).join('')}
+                        <div class="guest-list list-right">${ns.slice(mid).map(n=>`<div>${n}</div>`).join('')}</div>
                     </div>
                 `;
             }
