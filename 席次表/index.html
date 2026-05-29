@@ -104,13 +104,15 @@
             container.innerHTML = '';
             for(let i=1; i<=9; i++) {
                 const ns = tableData[i] || [];
+                // テーブル1と3は左列を5名に設定
+                const splitAt = (i === 1 || i === 3) ? 5 : 6;
                 container.innerHTML += `
                     <div class="table-group">
                         <div class="table-title">Table ${i}</div>
                         <div class="table-card" onclick="openModal('${i}')">
                             <div class="guest-wrapper">
-                                <div class="guest-list list-left">${ns.slice(0, 6).map(n=>`<div>${n}</div>`).join('')}</div>
-                                <div class="guest-list list-right">${ns.slice(6, 12).map(n=>`<div>${n}</div>`).join('')}</div>
+                                <div class="guest-list list-left">${ns.slice(0, splitAt).map(n=>`<div>${n}</div>`).join('')}</div>
+                                <div class="guest-list list-right">${ns.slice(splitAt, 12).map(n=>`<div>${n}</div>`).join('')}</div>
                             </div>
                         </div>
                     </div>`;
@@ -121,8 +123,9 @@
             activeId = id; isEditMode = false;
             document.getElementById('m-title').innerText = "Table " + id;
             const names = tableData[id] || [];
-            document.getElementById('m-left').innerHTML = names.slice(0, 6).join('<br>') || '(空席)';
-            document.getElementById('m-right').innerHTML = names.slice(6, 12).join('<br>');
+            const splitAt = (id == 1 || id == 3) ? 5 : 6;
+            document.getElementById('m-left').innerHTML = names.slice(0, splitAt).join('<br>') || '(空席)';
+            document.getElementById('m-right').innerHTML = names.slice(splitAt, 12).join('<br>');
             document.getElementById('m-editor').style.display = 'none';
             document.getElementById('m-display').style.display = 'flex';
             document.getElementById('m-btn').innerText = 'リスト編集';
