@@ -44,6 +44,11 @@
         .p-activity { padding: 8px 5px; text-align: left; vertical-align: top; line-height: 1.4; white-space: nowrap; }
         .red-bold { color: var(--keio-red); font-weight: bold; }
         .gold-bold { color: var(--gold-accent); font-weight: bold; }
+        
+        .bus-container { margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px; text-align: center; }
+        .bus-title { font-weight: bold; color: var(--keio-blue); margin-bottom: 10px; font-size: 13px; }
+        .bus-route-list { display: flex; flex-direction: column; gap: 15px; font-size: 11px; color: #555; }
+        .bus-group { line-height: 1.5; }
     </style>
 </head>
 <body>
@@ -70,6 +75,20 @@
             <tr><td class="p-time gold-bold">9:40 PM</td><td class="p-activity"><span class="gold-bold">帰りのバスをご利用される方：</span><br><span class="red-bold">バスへの移動をお願いいたします。</span></td></tr>
             <tr><td class="p-time red-bold">9:50 PM</td><td class="p-activity red-bold">バス会場出発</td></tr>
         </table>
+        
+        <div class="bus-container">
+            <div class="bus-title">帰りのバスルート</div>
+            <div class="bus-route-list">
+                <div class="bus-group">
+                    <strong>バス①</strong><br>
+                    1. Harrison Station<br>2. Hyatt House White Plains<br>3. Cambria<br>4. Residence Inn by Marriott
+                </div>
+                <div class="bus-group">
+                    <strong>バス②</strong><br>
+                    1. Luxury Apartment<br>2. Sonesta White Plains Downtown<br>3. Opus Westchester<br>4. Westchester Marriott Tarrytown
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:9999; align-items:center; justify-content:center;">
