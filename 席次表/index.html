@@ -26,15 +26,15 @@
 
         @media screen and (orientation: portrait) {
             .table-card { width: 100%; background: rgba(245, 241, 228, 0.6); border: 1px solid rgba(180, 151, 90, 0.3); border-radius: 12px; padding: 10px 2px; }
-            .list-left { text-align: right; padding-right: 3px; }
-            .list-right { text-align: left; padding-left: 3px; }
+            .list-left { text-align: right; padding-right: 6px; }
+            .list-right { text-align: left; padding-left: 6px; }
         }
 
         @media screen and (orientation: landscape) {
             .table-card { width: 70px; height: 70px; background: var(--table-beige); border-radius: 50%; box-shadow: inset 0 0 10px rgba(180, 151, 90, 0.2); }
-            .guest-wrapper { position: absolute; width: 200px; }
-            .list-left { text-align: right; padding-right: 35px; }
-            .list-right { text-align: left; padding-left: 35px; }
+            .guest-wrapper { position: absolute; width: 220px; }
+            .list-left { text-align: right; padding-right: 45px; }
+            .list-right { text-align: left; padding-left: 45px; }
         }
 
         .program-section { margin: 40px auto; width: 95%; max-width: 600px; border-top: 1px solid #eee; padding-top: 30px; text-align: center; }
@@ -44,11 +44,6 @@
         .p-activity { padding: 8px 5px; text-align: left; vertical-align: top; line-height: 1.4; white-space: nowrap; }
         .red-bold { color: var(--keio-red); font-weight: bold; }
         .gold-bold { color: var(--gold-accent); font-weight: bold; }
-
-        #modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999; align-items: center; justify-content: center; }
-        .modal-box { background: white; padding: 20px; border-radius: 15px; width: 85%; }
-        textarea { width: 100%; height: 150px; }
-        .btn { background: var(--keio-blue); color: white; border: none; padding: 10px 20px; border-radius: 20px; }
     </style>
 </head>
 <body>
@@ -67,7 +62,7 @@
         <div class="program-title">Program</div>
         <table class="program-table">
             <tr><td class="p-time">6:00 PM - 7:00 PM</td><td class="p-activity">Cocktail Hour / Terrace</td></tr>
-            <tr><td class="p-time">6:50 PM</td><td class="p-activity red-bold">Group Photo</td></tr>
+            <tr><td class="p-time">6:50 PM</td><td class="p-activity gold-bold">Group Photo</td></tr>
             <tr><td class="p-time">7:00 PM - 8:00 PM</td><td class="p-activity">Seated Dinner / Grand Ballroom<br>Opening Remarks: NYPA会長 堀 雄一朗様<br>Toast Speech: 日本PA副代表 兼 学年代表 植木 信行様</td></tr>
             <tr><td class="p-time">8:00 PM - 10:00 PM</td><td class="p-activity">Dessert / Terrace</td></tr>
             <tr><td class="p-time gold-bold">8:30 PM</td><td class="p-activity gold-bold">Video Presentation</td></tr>
@@ -77,16 +72,18 @@
         </table>
     </div>
 
-    <div id="modal"><div class="modal-box">
-        <h2 id="m-title" style="font-size:16px;">Table Edit</h2>
-        <div id="m-display" style="display:flex; font-size:12px;">
-            <div id="m-left" style="flex:1; text-align:right;"></div>
-            <div id="m-right" style="flex:1; padding-left:10px;"></div>
+    <div id="modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:9999; align-items:center; justify-content:center;">
+        <div class="modal-box" style="background:white; padding:20px; border-radius:15px; width:85%;">
+            <h2 id="m-title" style="font-size:16px;">Table Edit</h2>
+            <div id="m-display" style="display:flex; font-size:12px;">
+                <div id="m-left" style="flex:1; text-align:right;"></div>
+                <div id="m-right" style="flex:1; padding-left:10px;"></div>
+            </div>
+            <textarea id="m-editor" style="display:none; width:100%; height:150px;"></textarea>
+            <button id="m-btn" class="btn" style="background:#003366; color:white; border:none; padding:10px 20px; border-radius:20px;" onclick="toggleEdit()">リスト編集</button>
+            <button onclick="closeModal()" style="border:none; background:none; color:#888;">閉じる</button>
         </div>
-        <textarea id="m-editor" style="display:none;"></textarea>
-        <button id="m-btn" class="btn" onclick="toggleEdit()">リスト編集</button>
-        <button onclick="closeModal()">閉じる</button>
-    </div></div>
+    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
@@ -104,8 +101,7 @@
             container.innerHTML = '';
             for(let i=1; i<=9; i++) {
                 const ns = tableData[i] || [];
-                // テーブル1と3は左列を5名に設定
-                const splitAt = (i === 1 || i === 3) ? 5 : 6;
+                const splitAt = (i == 1 || i == 3) ? 5 : 6;
                 container.innerHTML += `
                     <div class="table-group">
                         <div class="table-title">Table ${i}</div>
