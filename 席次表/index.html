@@ -48,11 +48,11 @@
         
         .bus-container { margin-top: 20px; text-align: center; font-size: 11px; }
         .bus-title { font-family: 'Great Vibes', cursive; font-size: 2.0rem; color: var(--gold-accent); margin-bottom: 20px; }
-        .bus-subtitle { font-weight: bold; color: var(--gold-accent); margin-top: 15px; margin-bottom: 5px; text-align: left; display: inline-block; width: 100%; max-width: 300px; }
-        .bus-text-block { display: inline-block; text-align: left; color: #555; width: 100%; max-width: 300px; line-height: 1.6; }
-        .bus-route-list { display: inline-block; text-align: left; color: #555; width: 100%; max-width: 300px; }
+        .bus-subtitle { font-weight: bold; color: var(--gold-accent); margin-top: 15px; margin-bottom: 5px; text-align: left; display: inline-block; width: 100%; max-width: 300px; font-size: 11px; }
+        .bus-text-block { display: inline-block; text-align: left; color: #555; width: 100%; max-width: 300px; line-height: 1.6; font-size: 11px; }
+        .bus-route-list { display: inline-block; text-align: left; color: #555; width: 100%; max-width: 300px; font-size: 11px; }
         .bus-group { line-height: 1.6; margin-bottom: 15px; }
-        .bus-note { color: #555; margin-top: 15px; }
+        .bus-note { color: #555; margin-top: 15px; font-size: 11px; }
         .separator-star { margin: 20px 0; font-size: 20px; color: var(--gold-accent); }
     </style>
 </head>
@@ -110,6 +110,7 @@
         </div>
     </div>
 
+    <!-- モーダルおよびスクリプト（変更なし） -->
     <div id="modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:9999; align-items:center; justify-content:center;">
         <div class="modal-box" style="background:white; padding:20px; border-radius:15px; width:85%;">
             <h2 id="m-title" style="font-size:16px;">Table Edit</h2>
@@ -122,37 +123,23 @@
             <button onclick="closeModal()" style="border:none; background:none; color:#888;">閉じる</button>
         </div>
     </div>
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-
         const firebaseConfig = { apiKey: "AIzaSyDF-hu49Q2U8iqwct-yUTxfqWWo81lA8LU", authDomain: "seating-chart-1e3e0.firebaseapp.com", projectId: "seating-chart-1e3e0", storageBucket: "seating-chart-1e3e0.firebasestorage.app", messagingSenderId: "946854768169", appId: "1:946854768169:web:a9e6cb0938ed0c586bf638" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        
         let tableData = {}, activeId = null, isEditMode = false;
-
         function renderSeating() {
             const container = document.getElementById('seating');
             container.innerHTML = '';
             for(let i=1; i<=9; i++) {
                 const ns = tableData[i] || [];
                 const splitAt = (i == 1 || i == 3) ? 5 : 6;
-                container.innerHTML += `
-                    <div class="table-group">
-                        <div class="table-title">Table ${i}</div>
-                        <div class="table-card" onclick="openModal('${i}')">
-                            <div class="guest-wrapper">
-                                <div class="guest-list list-left">${ns.slice(0, splitAt).map(n=>`<div>${n}</div>`).join('')}</div>
-                                <div class="guest-list list-right">${ns.slice(splitAt, 12).map(n=>`<div>${n}</div>`).join('')}</div>
-                            </div>
-                        </div>
-                    </div>`;
+                container.innerHTML += `<div class="table-group"><div class="table-title">Table ${i}</div><div class="table-card" onclick="openModal('${i}')"><div class="guest-wrapper"><div class="guest-list list-left">${ns.slice(0, splitAt).map(n=>`<div>${n}</div>`).join('')}</div><div class="guest-list list-right">${ns.slice(splitAt, 12).map(n=>`<div>${n}</div>`).join('')}</div></div></div></div>`;
             }
         }
-
         window.openModal = function(id) {
             activeId = id; isEditMode = false;
             document.getElementById('m-title').innerText = "Table " + id;
@@ -165,9 +152,7 @@
             document.getElementById('m-btn').innerText = 'リスト編集';
             document.getElementById('modal').style.display = 'flex';
         };
-
         window.closeModal = () => document.getElementById('modal').style.display = 'none';
-
         window.toggleEdit = async function() {
             const ed = document.getElementById('m-editor');
             if(!isEditMode) {
@@ -180,12 +165,8 @@
                 isEditMode = false; closeModal();
             }
         };
-
         onSnapshot(doc(db, 'seating', 'parents_dinner_2026'), (snap) => {
-            if (snap.exists()) {
-                tableData = snap.data().guests || {};
-                renderSeating();
-            }
+            if (snap.exists()) { tableData = snap.data().guests || {}; renderSeating(); }
         });
         signInAnonymously(getAuth(app));
     </script>
