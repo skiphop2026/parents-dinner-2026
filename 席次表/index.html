@@ -15,6 +15,7 @@
         h1 { font-family: 'Great Vibes', cursive; font-size: 2.5rem; margin: 0; color: var(--keio-blue); }
         .event-info { color: #888; font-size: 10px; margin-top: 5px; }
         .line { width: 30px; height: 1px; background: var(--keio-red); margin: 10px auto; }
+        .thin-line { width: 90%; max-width: 500px; height: 1px; background: #eee; margin: 30px auto; }
 
         .seating-container { max-width: 1000px; margin: 0 auto; padding: 10px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
         .table-group { display: flex; flex-direction: column; align-items: center; }
@@ -45,12 +46,14 @@
         .red-bold { color: var(--keio-red); font-weight: bold; }
         .gold-bold { color: var(--gold-accent); font-weight: bold; }
         
-        .bus-container { margin-top: 40px; text-align: center; }
+        .bus-container { margin-top: 20px; text-align: center; }
         .bus-title { font-family: 'Great Vibes', cursive; font-size: 2.0rem; color: var(--gold-accent); margin-bottom: 20px; }
-        .bus-subtitle { font-weight: bold; color: var(--gold-accent); margin-top: 15px; margin-bottom: 5px; }
-        .bus-route-list { display: inline-block; text-align: left; font-size: 11px; color: #555; }
+        .bus-subtitle { font-weight: bold; color: var(--gold-accent); margin-top: 15px; margin-bottom: 5px; text-align: left; display: inline-block; width: 100%; max-width: 300px; }
+        .bus-text-block { display: inline-block; text-align: left; font-size: 11px; color: #555; width: 100%; max-width: 300px; }
+        .bus-route-list { display: inline-block; text-align: left; font-size: 11px; color: #555; width: 100%; max-width: 300px; }
         .bus-group { line-height: 1.6; margin-bottom: 15px; }
         .bus-note { font-size: 10px; color: #555; margin-top: 15px; }
+        .separator-star { margin: 20px 0; font-size: 20px; color: var(--gold-accent); }
     </style>
 </head>
 <body>
@@ -78,19 +81,22 @@
             <tr><td class="p-time red-bold">9:50 PM</td><td class="p-activity red-bold">バス会場出発</td></tr>
         </table>
         
+        <div class="thin-line"></div>
         <div class="bus-container">
             <div class="bus-title">Bus</div>
             
             <div class="bus-subtitle">行きのバス</div>
-            <div style="font-size:11px; line-height:1.6; color:#555;">
-                バスA<br>男子生徒のご家族の皆さま<br>
-                バスB<br>女子生徒のご家族の皆さま<br>
+            <div class="bus-text-block">
+                <strong>バスA</strong><br>男子生徒のご家族の皆さま<br><br>
+                <strong>バスB</strong><br>女子生徒のご家族の皆さま<br><br><br>
                 バスはメインエントランス前のロータリーに停車しております。<br>
                 5:35PM 乗り込み開始、<span class="red-bold">5:45PM</span> 出発いたします。<br>
                 どうかお乗り遅れのないようご注意ください。
             </div>
 
-            <div class="bus-subtitle" style="margin-top:25px;">帰りのバスルート</div>
+            <div class="separator-star">✳︎</div>
+
+            <div class="bus-subtitle">帰りのバスルート</div>
             <div class="bus-route-list">
                 <div class="bus-group">
                     <strong>バス①</strong><br>
