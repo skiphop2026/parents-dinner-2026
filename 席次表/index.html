@@ -32,10 +32,12 @@
         }
 
         @media screen and (orientation: landscape) {
+            body { font-size: 14px; } /* 横向き時はベースサイズを少し上げる */
             .table-card { width: 70px; height: 70px; background: var(--table-beige); border-radius: 50%; box-shadow: inset 0 0 10px rgba(180, 151, 90, 0.2); }
             .guest-wrapper { position: absolute; width: 220px; }
             .list-left { text-align: right; padding-right: 45px; }
             .list-right { text-align: left; padding-left: 45px; }
+            .bus-container { font-size: 13px !important; } /* バスセクションも横向き用にサイズ調整 */
         }
 
         .program-section { margin: 40px auto; width: 95%; max-width: 600px; border-top: 1px solid #eee; padding-top: 30px; text-align: center; }
@@ -48,16 +50,15 @@
         
         .bus-container { margin-top: 20px; text-align: center; font-size: 11px; }
         .bus-title { font-family: 'Great Vibes', cursive; font-size: 2.0rem; color: var(--gold-accent); margin-bottom: 20px; }
-        .bus-subtitle { font-weight: bold; color: var(--gold-accent); margin-top: 15px; margin-bottom: 5px; text-align: left; display: inline-block; width: 100%; max-width: 300px; font-size: 11px; }
-        .bus-text-block { display: inline-block; text-align: left; color: #555; width: 100%; max-width: 300px; line-height: 1.6; font-size: 11px; }
-        .bus-route-list { display: inline-block; text-align: left; color: #555; width: 100%; max-width: 300px; font-size: 11px; }
+        .bus-subtitle { font-weight: bold; color: var(--gold-accent); margin-top: 15px; margin-bottom: 5px; text-align: left; display: inline-block; width: 100%; max-width: 300px; font-size: inherit; }
+        .bus-text-block { display: inline-block; text-align: left; color: #555; width: 100%; max-width: 300px; line-height: 1.6; font-size: inherit; }
+        .bus-route-list { display: inline-block; text-align: left; color: #555; width: 100%; max-width: 300px; font-size: inherit; }
         .bus-group { line-height: 1.6; margin-bottom: 15px; }
-        .bus-note { color: #555; margin-top: 15px; font-size: 11px; }
+        .bus-note { color: #555; margin-top: 15px; font-size: inherit; }
         .separator-star { margin: 20px 0; font-size: 20px; color: var(--gold-accent); }
     </style>
 </head>
 <body>
-
     <header>
         <div class="grad-cap">🎓</div>
         <div class="school-name">KEIO ACADEMY OF NEW YORK</div>
@@ -84,7 +85,6 @@
         <div class="thin-line"></div>
         <div class="bus-container">
             <div class="bus-title">Bus</div>
-            
             <div class="bus-subtitle">行きのバス</div>
             <div class="bus-text-block">
                 <strong>バスA</strong><br>男子生徒のご家族の皆さま<br><br>
@@ -92,9 +92,7 @@
                 バスはメインエントランス前のロータリーに停車しております。5:35PM 乗り込み開始、<span class="red-bold">5:45PM</span> 出発いたします。<br>
                 どうかお乗り遅れのないようご注意ください。
             </div>
-
             <div class="separator-star">✳︎</div>
-
             <div class="bus-subtitle">帰りのバスルート</div>
             <div class="bus-route-list">
                 <div class="bus-group">
@@ -109,66 +107,5 @@
             <div class="bus-note">バス入口にホテル名が記載してあります。<br>お乗り間違いのないようお気をつけ下さい。</div>
         </div>
     </div>
-
-    <!-- モーダルおよびスクリプト（変更なし） -->
-    <div id="modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:9999; align-items:center; justify-content:center;">
-        <div class="modal-box" style="background:white; padding:20px; border-radius:15px; width:85%;">
-            <h2 id="m-title" style="font-size:16px;">Table Edit</h2>
-            <div id="m-display" style="display:flex; font-size:12px;">
-                <div id="m-left" style="flex:1; text-align:right;"></div>
-                <div id="m-right" style="flex:1; padding-left:10px;"></div>
-            </div>
-            <textarea id="m-editor" style="display:none; width:100%; height:150px;"></textarea>
-            <button id="m-btn" class="btn" style="background:#003366; color:white; border:none; padding:10px 20px; border-radius:20px;" onclick="toggleEdit()">リスト編集</button>
-            <button onclick="closeModal()" style="border:none; background:none; color:#888;">閉じる</button>
-        </div>
-    </div>
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-        const firebaseConfig = { apiKey: "AIzaSyDF-hu49Q2U8iqwct-yUTxfqWWo81lA8LU", authDomain: "seating-chart-1e3e0.firebaseapp.com", projectId: "seating-chart-1e3e0", storageBucket: "seating-chart-1e3e0.firebasestorage.app", messagingSenderId: "946854768169", appId: "1:946854768169:web:a9e6cb0938ed0c586bf638" };
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        let tableData = {}, activeId = null, isEditMode = false;
-        function renderSeating() {
-            const container = document.getElementById('seating');
-            container.innerHTML = '';
-            for(let i=1; i<=9; i++) {
-                const ns = tableData[i] || [];
-                const splitAt = (i == 1 || i == 3) ? 5 : 6;
-                container.innerHTML += `<div class="table-group"><div class="table-title">Table ${i}</div><div class="table-card" onclick="openModal('${i}')"><div class="guest-wrapper"><div class="guest-list list-left">${ns.slice(0, splitAt).map(n=>`<div>${n}</div>`).join('')}</div><div class="guest-list list-right">${ns.slice(splitAt, 12).map(n=>`<div>${n}</div>`).join('')}</div></div></div></div>`;
-            }
-        }
-        window.openModal = function(id) {
-            activeId = id; isEditMode = false;
-            document.getElementById('m-title').innerText = "Table " + id;
-            const names = tableData[id] || [];
-            const splitAt = (id == 1 || id == 3) ? 5 : 6;
-            document.getElementById('m-left').innerHTML = names.slice(0, splitAt).join('<br>') || '(空席)';
-            document.getElementById('m-right').innerHTML = names.slice(splitAt, 12).join('<br>');
-            document.getElementById('m-editor').style.display = 'none';
-            document.getElementById('m-display').style.display = 'flex';
-            document.getElementById('m-btn').innerText = 'リスト編集';
-            document.getElementById('modal').style.display = 'flex';
-        };
-        window.closeModal = () => document.getElementById('modal').style.display = 'none';
-        window.toggleEdit = async function() {
-            const ed = document.getElementById('m-editor');
-            if(!isEditMode) {
-                ed.value = (tableData[activeId] || []).join('\n');
-                ed.style.display = 'block'; document.getElementById('m-display').style.display = 'none';
-                document.getElementById('m-btn').innerText = '保存する'; isEditMode = true;
-            } else {
-                tableData[activeId] = ed.value.split('\n').filter(s=>s.trim());
-                await setDoc(doc(db, 'seating', 'parents_dinner_2026'), { guests: tableData });
-                isEditMode = false; closeModal();
-            }
-        };
-        onSnapshot(doc(db, 'seating', 'parents_dinner_2026'), (snap) => {
-            if (snap.exists()) { tableData = snap.data().guests || {}; renderSeating(); }
-        });
-        signInAnonymously(getAuth(app));
-    </script>
-</body>
+    </body>
 </html>
